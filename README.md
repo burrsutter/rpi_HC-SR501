@@ -16,10 +16,23 @@ The following pin header diagram shows the header and Broadcom naming convention
 ![](./images/Pi2Header.png =700x)
 
 # Python usage
-python poll_motion.py
+The first version (poll_motion.py) sits in a loop waiting for the GPIO pin to go to a high state:
 
-# node usage
-To run the Python client, use:
+	root@raspberrypi:/media/github/rpi_HC-SR501# python poll_motion.py 
+	PIR Module Test (CTRL+C to exit)
+	Ready
+	Motion Detected: 1
+	Motion Detected: 2
+	Motion Detected: 3
+	Motion Detected: 4
+	Motion Detected: 5
+	Motion Detected: 6
+	^CTraceback (most recent call last):
+	  File "poll_motion.py", line 20, in <module>
+		time.sleep(1)
+	KeyboardInterrupt
+
+The second version () uses the GPIO trigger callback to be told when the GPIO pin state goes to a high state:
 
 	root@raspberrypi:/media/github/rpi_HC-SR501# python sense_motion.py 
 	PIR Module Test (CTRL+C to exit)
@@ -28,7 +41,16 @@ To run the Python client, use:
 	Motion Detected
 	^CQuit
 	root@raspberrypi:/media/github/rpi_HC-SR501# 
- 
+
+# node usage
+To run the node client, use:
+
+	root@raspberrypi:/media/github/rpi_HC-SR501# node sense_motion.js 
+	Monitoring...
+	Motion Detected: 1
+	Motion Detected: 1
+	Motion Detected: 1
+	^CExiting
 
 # Java usage
 To run the Java client, use the Gradle script and run:
