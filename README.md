@@ -73,3 +73,36 @@ To run the Java client, use the Gradle script and run:
 	 --> GPIO TRIGGER CALLBACK RECEIVED 
 	^CInterrupted, stopping...
 	root@raspberrypi:/media/github/rpi_HC-SR501#
+
+# Monitoring the GPIO pin state from command line
+The GPIO pins that are enabled have their values availble from the /sys/class/gpio/ filesystem. When you are running
+one of the clients above, you can watch the GPIO21 pin state transition from high to low and back using a simple script
+like the following:
+
+	root@raspberrypi:~# ls /sys/class/gpio/gpio21
+	active_low  device  direction  edge  subsystem	uevent	value
+	root@raspberrypi:~# while true; do
+	> cat /sys/class/gpio/gpio21/value
+	> sleep 1
+	> done
+	0
+	0
+	0
+	0
+	0
+	0
+	1
+	1
+	1
+	1
+	0
+	0
+	1
+	1
+	0
+	0
+	0
+	0
+	^C
+
+This shows two transitions from low to high corresponding to two motion detection events.
