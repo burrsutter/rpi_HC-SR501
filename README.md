@@ -1,7 +1,53 @@
-HC-SR501
-examples
-https://github.com/pubnub/workshop-raspberrypi/tree/master/projects-python/motion-sensor
-http://thejackalofjavascript.com/rpi-pir-sensor-node-iot-intruder-alert/
-http://www.modmypi.com/blog/raspberry-pi-gpio-sensing-motion-detection
+# Passive Infrared Motion Sensor, HC-SR501
+The HC-SR501 is a passive infrared motion sensor. The PIR sensors we’ll be using in this lab have three pins: ground, digital out and 3-5VDC in. At idle, when no motion has been detected, the digital out will remain low. When motion is detected, the digital out will pulse high (3.3V) and we’ll the Raspberry Pi GPIO trigger feature to sense this. The HC-SR501 sensor has a range of approximately 7 meters, and a 110° x 70° detection range.
 
+# Wiring the Sensor
+To wire the PIR sensor to the RaspberryPi2, connect the pins as shown in the following diagram:
 
+![](./images/PIR_wiring.jpg =350x600)
+
+This has the connections:
+
+* Sensor VCC pin connected to the Pi 5V Pin2
+* Sensor OUT pin connected to the Pi GPIO21 Pin40
+* Sensor GND pin connected to the Pi Ground Pin6
+
+The following pin header diagram shows the header and Broadcom naming convention:
+![](./images/Pi2Header.png =700x)
+
+# Python usage
+python poll_motion.py
+
+# node usage
+To run the Python client, use:
+
+	root@raspberrypi:/media/github/rpi_HC-SR501# python sense_motion.py 
+	PIR Module Test (CTRL+C to exit)
+	Ready
+	Motion Detected
+	Motion Detected
+	^CQuit
+	root@raspberrypi:/media/github/rpi_HC-SR501# 
+ 
+
+# Java usage
+To run the Java client, use the Gradle script and run:
+
+	root@raspberrypi:/media/github/rpi_HC-SR501# gradle motionLoop
+	Starting a new Gradle Daemon for this build (subsequent builds will be faster).
+	:compileJava
+	:processResources UP-TO-DATE
+	:classes
+	:motionLoop
+	PIR Module Test (CTRL+C to exit)
+	Ready
+	 --> GPIO TRIGGER CALLBACK RECEIVED 
+	 --> GPIO TRIGGER CALLBACK RECEIVED 
+	 --> GPIO TRIGGER CALLBACK RECEIVED 
+	 --> GPIO TRIGGER CALLBACK RECEIVED 
+	 --> GPIO TRIGGER CALLBACK RECEIVED 
+	 --> GPIO TRIGGER CALLBACK RECEIVED 
+	 --> GPIO TRIGGER CALLBACK RECEIVED 
+	 --> GPIO TRIGGER CALLBACK RECEIVED 
+	^CInterrupted, stopping...
+	root@raspberrypi:/media/github/rpi_HC-SR501#
