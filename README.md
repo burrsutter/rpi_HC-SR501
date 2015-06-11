@@ -4,7 +4,7 @@ The HC-SR501 is a passive infrared motion sensor. The PIR sensors we’ll be usi
 # Wiring the Sensor
 To wire the PIR sensor to the RaspberryPi2, connect the pins as shown in the following diagram:
 
-![](./images/PIR_wiring.jpg =350x600)
+![image](./images/PIR_wiring.jpg)
 
 This has the connections:
 
@@ -13,7 +13,7 @@ This has the connections:
 * Sensor GND pin connected to the Pi Ground Pin6
 
 The following pin header diagram shows the header and Broadcom naming convention:
-![](./images/Pi2Header.png =700x)
+![](./images/Pi2Header.png)
 
 # Python usage
 The first version (poll_motion.py) sits in a loop waiting for the GPIO pin to go to a high state:
