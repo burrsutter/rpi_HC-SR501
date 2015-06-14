@@ -6,7 +6,7 @@ To wire the PIR sensor to the RaspberryPi2, connect the pins as shown in the fol
 
 ![image](./images/PIR_wiring.jpg)
 
-This has the connections:
+The connections may be made directly from the RaspberryPi GPIO header to the sensor using the female/female jumper wires:
 
 * Sensor VCC pin connected to the Pi 5V Pin2
 * Sensor OUT pin connected to the Pi GPIO21 Pin40
@@ -16,7 +16,7 @@ The following pin header diagram shows the header and Broadcom naming convention
 ![](./images/Pi2Header.png)
 
 # Python usage
-The first version (poll_motion.py) sits in a loop waiting for the GPIO pin to go to a high state:
+The first version (poll_motion.py) sits in a loop waiting for the GPIO pin to go to a high state. To test the motion detection, have the sensor pointed away from you, and then move your hand in front the sensor to trigger the GPIO pin to read a high value.
 
 	root@raspberrypi:/media/github/rpi_HC-SR501# python poll_motion.py 
 	PIR Module Test (CTRL+C to exit)
@@ -32,7 +32,8 @@ The first version (poll_motion.py) sits in a loop waiting for the GPIO pin to go
 		time.sleep(1)
 	KeyboardInterrupt
 
-The second version () uses the GPIO trigger callback to be told when the GPIO pin state goes to a high state:
+## Using the GPIO trigger callback
+The second version (sense_motion.py) uses the GPIO trigger callback to be told when the GPIO pin state goes to from low to the high state on the rising edge of the change. Run the sense_motion.py script and again move your hand in front of the sensor to trigger the motion detection callback:
 
 	root@raspberrypi:/media/github/rpi_HC-SR501# python sense_motion.py 
 	PIR Module Test (CTRL+C to exit)
@@ -40,10 +41,13 @@ The second version () uses the GPIO trigger callback to be told when the GPIO pi
 	Motion Detected
 	Motion Detected
 	^CQuit
-	root@raspberrypi:/media/github/rpi_HC-SR501# 
+	root@raspberrypi:/media/github/rpi_HC-SR501#
+	
+## Adding MQTT messaging
+Publishing the motion detection to the MQTT broker is only partially completed in the sense_motion_mqtt.py script. Take a look at the script and incorprate the motion detection code into this script to enable the send of a message in the motion detection callback function.
 
 # node usage
-To run the node client, use:
+To run the nodejs client that uses the GPIO trigger callback to be told when the GPIO pin state goes to from low to the high state on the rising edge of the change, use:
 
 	root@raspberrypi:/media/github/rpi_HC-SR501# node sense_motion.js 
 	Monitoring...
@@ -51,6 +55,9 @@ To run the node client, use:
 	Motion Detected: 1
 	Motion Detected: 1
 	^CExiting
+
+## Adding MQTT messaging
+Publishing the motion detection to the MQTT broker is only partially completed in the sense_motion_mqtt.js script. Take a look at the script configure the id varaible to be a unique value so that the topic is unique to your RaspberryPi.
 
 # Java usage
 To run the Java client, use the Gradle script and run:
@@ -73,6 +80,9 @@ To run the Java client, use the Gradle script and run:
 	 --> GPIO TRIGGER CALLBACK RECEIVED 
 	^CInterrupted, stopping...
 	root@raspberrypi:/media/github/rpi_HC-SR501#
+
+## Adding MQTT messaging
+TODO
 
 # Monitoring the GPIO pin state from command line
 The GPIO pins that are enabled have their values availble from the /sys/class/gpio/ filesystem. When you are running
