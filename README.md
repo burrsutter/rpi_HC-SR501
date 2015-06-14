@@ -88,12 +88,38 @@ To run the Java client, use the Gradle script and run:
 	root@raspberrypi:/media/github/rpi_HC-SR501#
 
 ## Adding MQTT messaging to Java
-The org.jboss.summit2015.hcsr501.MotionSensorMQTT version of the client sends the motion events to an MQTT broker. 
+The org.jboss.summit2015.hcsr501.MotionSensorMQTT version of the client sends the motion events to an MQTT broker. You can run this version of the client using:
 
+	root@raspberrypi:~/Labs/rpi_HC-SR501# gradle motionLoopMQTT
+	Starting a new Gradle Daemon for this build (subsequent builds will be faster).
+	:compileJava
+	:processResources UP-TO-DATE
+	:classes
+	:motionLoopMQTT
+	/usr/lib/jvm/jdk-8-oracle-arm-vfp-hflt/bin/java -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8 -Duser.country=GB -Duser.language=en -Duser.variant -cp /root/Labs/rpi_HC-SR501/build/classes/main:/root/Labs/rpi_HC-SR501/build/resources/main:/root/.gradle/caches/modules-2/files-2.1/org.eclipse.paho/org.eclipse.paho.client.mqttv3/1.0.2/11752d3f24d1a9deda4533a7ca18d8496417ceeb/org.eclipse.paho.client.mqttv3-1.0.2.jar:/root/.gradle/caches/modules-2/files-2.1/com.pi4j/pi4j-core/1.0/b479fd891a87ab398c1d9abef19de95dc8037d9/pi4j-core-1.0.jar:/root/.gradle/caches/modules-2/files-2.1/com.pi4j/pi4j-device/1.0/a6f2229d4f6f7201a839720c948eb64e2178b3b3/pi4j-device-1.0.jar:/root/.gradle/caches/modules-2/files-2.1/com.pi4j/pi4j-gpio-extension/1.0/8a9b6a3ee2be95f5848a2f4e2d876e9284e649d8/pi4j-gpio-extension-1.0.jar org.jboss.summit2015.hcsr501.MotionSensorMQTT 100 
+	Output:
+	
+	PIR Module Test (CTRL+C to exit)
+	Connected to: tcp://iot.eclipse.org:1883
+	Ready
+	{'event':'motion-detection', 'time': 1434323074251}
+	{'event':'motion-detection', 'time': 1434323393745}
 
 You can see the temperature readings as they are published by running the readMQTT task in a separate console, or even better, you laptop to verifying the readings are getting off of the RaspberryPi.
 
-	gradle readMQTT
+	root@raspberrypi:~/Labs/rpi_HC-SR501# gradle readMQTT
+	Starting a new Gradle Daemon for this build (subsequent builds will be faster).
+	:compileJava UP-TO-DATE
+	:processResources UP-TO-DATE
+	:classes UP-TO-DATE
+	:readMQTT
+	/usr/lib/jvm/jdk-8-oracle-arm-vfp-hflt/bin/java -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8 -Duser.country=GB -Duser.language=en -Duser.variant -cp /root/Labs/rpi_HC-SR501/build/classes/main:/root/Labs/rpi_HC-SR501/build/resources/main:/root/.gradle/caches/modules-2/files-2.1/org.eclipse.paho/org.eclipse.paho.client.mqttv3/1.0.2/11752d3f24d1a9deda4533a7ca18d8496417ceeb/org.eclipse.paho.client.mqttv3-1.0.2.jar:/root/.gradle/caches/modules-2/files-2.1/com.pi4j/pi4j-core/1.0/b479fd891a87ab398c1d9abef19de95dc8037d9/pi4j-core-1.0.jar:/root/.gradle/caches/modules-2/files-2.1/com.pi4j/pi4j-device/1.0/a6f2229d4f6f7201a839720c948eb64e2178b3b3/pi4j-device-1.0.jar:/root/.gradle/caches/modules-2/files-2.1/com.pi4j/pi4j-gpio-extension/1.0/8a9b6a3ee2be95f5848a2f4e2d876e9284e649d8/pi4j-gpio-extension-1.0.jar org.jboss.summit2015.hcsr501.MqttRead 100 
+	When running on a host other than the RaspberryPi, pass in -Pid=NNN... where id is RHSummit2015_temp_rpi_hcsr501/id used by the sender
+	Output:
+	
+	Connected to: tcp://iot.eclipse.org:1883 as RecvMotionMQTT-1, reading 100 messages
+	messageArrived, topic=RHSummit2015_temp_rpi_hcsr501/1, msg={'event':'motion-detection', 'time': 1434323393745}
+	messageArrived, topic=RHSummit2015_temp_rpi_hcsr501/1, msg={'event':'motion-detection', 'time': 1434323481711}
 
 
 # Triggering LED from MQTT Message?
