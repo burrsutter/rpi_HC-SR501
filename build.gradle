@@ -18,17 +18,49 @@ dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.11'
 }
 
+ext.commandString = { List<String> cmdLine->
+    StringBuilder info = new StringBuilder();
+    for (String s : cmdLine) {
+        info.append(s);
+        info.append(' ');
+    }
+    return info.toString();
+}
+
 task motionLoop(type: JavaExec, dependsOn: classes) {
     main = 'org.jboss.summit2015.hcsr501.MotionSensor'
     jvmArgs = ['-XX:+HeapDumpOnOutOfMemoryError']
     classpath sourceSets.main.runtimeClasspath
     classpath configurations.runtime
 }
+motionLoop.doFirst {
+    println(commandString(commandLine))
+    println("Output:\n")
+}
+
 task motionLoopMQTT(type: JavaExec, dependsOn: classes) {
-    main = 'org.jboss.summit2015.ds18b20.ReadTemperatureMQTT'
+    main = 'org.jboss.summit2015.hcsr501.MotionSensorMQTT'
     args = ['100']
     jvmArgs = ['-XX:+HeapDumpOnOutOfMemoryError']
     classpath sourceSets.main.runtimeClasspath
     classpath configurations.runtime
 }
+motionLoopMQTT.doFirst {
+    println(commandString(commandLine))
+    println("Output:\n")
+}
 
+task readMQTT(type: JavaExec, dependsOn: classes) {
+    main = 'org.jboss.summit2015.hcsr501.MqttRead'
+    args = ['100']
+    if (project.hasProperty('id')) {
+        args(id)
+    }
+    jvmArgs = ['-XX:+HeapDumpOnOutOfMemoryError']
+    classpath sourceSets.main.runtimeClasspath
+    classpath configurations.runtime
+}
+readMQTT.doFirst {
+    println(commandString(commandLine))
+    println("When running on a host other than the RaspberryPi, pass in -Pid=NNN... where id is RHSummit2015_temp_rpi_hcsr501/id used by the sender\nOutput:\n")
+}

@@ -43,7 +43,7 @@ The second version (sense_motion.py) uses the GPIO trigger callback to be told w
 	^CQuit
 	root@raspberrypi:/media/github/rpi_HC-SR501#
 	
-## Adding MQTT messaging
+## Adding MQTT messaging to python
 Publishing the motion detection to the MQTT broker is only partially completed in the sense_motion_mqtt.py script. Take a look at the script and incorprate the motion detection code into this script to enable the send of a message in the motion detection callback function.
 
 # node usage
@@ -56,10 +56,16 @@ To run the nodejs client that uses the GPIO trigger callback to be told when the
 	Motion Detected: 1
 	^CExiting
 
-## Adding MQTT messaging
+## Adding MQTT messaging to node
 Publishing the motion detection to the MQTT broker is only partially completed in the sense_motion_mqtt.js script. Take a look at the script configure the id varaible to be a unique value so that the topic is unique to your RaspberryPi.
 
 # Java usage
+The Java client makes use of the [Pi4j](http://pi4j.com/) project which provides an object-oriented I/O API and implementation libraries for Java Programmers to access the full I/O capabilities of the Raspberry Pi platform. This project abstracts the low-level native integration and interrupt monitoring to enable Java programmers to focus on implementing their application business logic. 
+
+The code for the Java motion sensor client is found in the org.jboss.summit2015.hcsr501.MotionSensor class. While you wire up the sensor as indicated, when you look at the code, note that the Pi4j project uses a different numbering scheme for the pins in it's API, and this scheme is shown in this figure:
+
+![imag](./images/Pi4jHeader.png)
+
 To run the Java client, use the Gradle script and run:
 
 	root@raspberrypi:/media/github/rpi_HC-SR501# gradle motionLoop
@@ -81,8 +87,17 @@ To run the Java client, use the Gradle script and run:
 	^CInterrupted, stopping...
 	root@raspberrypi:/media/github/rpi_HC-SR501#
 
-## Adding MQTT messaging
-TODO
+## Adding MQTT messaging to Java
+The org.jboss.summit2015.hcsr501.MotionSensorMQTT version of the client sends the motion events to an MQTT broker. 
+
+
+You can see the temperature readings as they are published by running the readMQTT task in a separate console, or even better, you laptop to verifying the readings are getting off of the RaspberryPi.
+
+	gradle readMQTT
+
+
+# Triggering LED from MQTT Message?
+TODO: Perhaps add some feedback loop that has the RaspberryPi receiving a message and lighting a LED as a more advanced part of the project.
 
 # Monitoring the GPIO pin state from command line
 The GPIO pins that are enabled have their values availble from the /sys/class/gpio/ filesystem. When you are running

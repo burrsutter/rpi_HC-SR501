@@ -25,6 +25,7 @@ public class MotionSensor {
             System.out.println(" --> GPIO TRIGGER CALLBACK RECEIVED ");
             return null;
         };
+        // create a gpio callback trigger on the PIR device pin for when it's state goes high
         pir.addTrigger(new GpioCallbackTrigger(PinState.HIGH, callback));
 
         // stop all GPIO activity/threads by shutting down the GPIO controller
